@@ -7,8 +7,6 @@
 //
 
 #import "Ship.h"
-#import "Engine.h"
-#import "Pirate.h"
 
 
 @implementation Ship

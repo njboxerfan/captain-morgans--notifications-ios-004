@@ -32,16 +32,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)saveButtonTapped:(id)sender {
-    FISPiratesDataStore *store = [FISPiratesDataStore sharedPiratesDataStore];
-    Ship *newShip = [NSEntityDescription insertNewObjectForEntityForName:@"Ship" inManagedObjectContext:store.managedObjectContext];
-    newShip.name = self.shipNameField.text;
-    newShip.engine = [NSEntityDescription insertNewObjectForEntityForName:@"Engine" inManagedObjectContext:store.managedObjectContext];
-    newShip.engine.engineType = self.engineTypeField.text;
+- (IBAction)saveButtonTapped:(id)sender
+{    
+    NSMutableDictionary *shipDictionary = [[NSMutableDictionary alloc] init];
     
-    [self.pirate addShipsObject:newShip];
+    shipDictionary[@"shipName"] =self.shipNameField.text;
+    shipDictionary[@"shipEngineType"] =self.engineTypeField.text;
+    shipDictionary[@"pirate"] = self.pirate;
     
-    [store save];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"morgansShips" object:nil userInfo:shipDictionary];
+    
+//    [store save];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

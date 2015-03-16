@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Pirate.h"
+#import "Pirate+PirateFromDictionary.h"
 
 @interface FISPiratesDataStore : NSObject
 
@@ -19,5 +20,9 @@
 - (NSURL *)applicationDocumentsDirectory;
 
 + (instancetype) sharedPiratesDataStore;
+
+-(void)storePirate:(NSNotification *)pirateNotification;
+
+-(void)storeShip:(NSNotification *)shipNotification;
 
 @end

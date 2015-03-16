@@ -8,6 +8,7 @@
 
 #import "FISPiratesDataStore.h"
 #import "Ship.h"
+#import "Ship+ShipFromDictionary.h"
 #import "Engine.h"
 
 @interface FISPiratesDataStore ()
@@ -23,11 +24,28 @@ typedef NS_ENUM(NSInteger, EngineType) {
 
 # pragma mark - Singleton
 
+-(void)storePirate:(NSNotification *)pirateNotification
+{
+    [Pirate pirateFromDictionary:pirateNotification.userInfo andContext:self.managedObjectContext];
+    
+    [self save];
+}
+
+-(void)storeShip:(NSNotification *)shipNotification
+{
+    [Ship shipFromDictionary:shipNotification.userInfo andContext:self.managedObjectContext];
+    
+    [self save];
+}
+
 + (instancetype)sharedPiratesDataStore {
     static FISPiratesDataStore *_sharedPiratesDataStore = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedPiratesDataStore = [[FISPiratesDataStore alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:_sharedPiratesDataStore selector:@selector(storePirate:) name:@"morgansPirates" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:_sharedPiratesDataStore selector:@selector(storeShip:) name:@"morgansShips" object:nil];
     });
 
     return _sharedPiratesDataStore;
@@ -141,4 +159,10 @@ typedef NS_ENUM(NSInteger, EngineType) {
         [self generateTestData];
     }
 }
+
+-(void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 @end

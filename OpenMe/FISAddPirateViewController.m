@@ -21,6 +21,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,12 +30,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)saveButtonTapped:(id)sender {
-    FISPiratesDataStore *store = [FISPiratesDataStore sharedPiratesDataStore];
-    Pirate *newPirate = [NSEntityDescription insertNewObjectForEntityForName:@"Pirate" inManagedObjectContext:store.managedObjectContext];
-    newPirate.name = self.pirateNameField.text;
+- (IBAction)saveButtonTapped:(id)sender
+{
+    NSMutableDictionary *pirateDictionary = [[NSMutableDictionary alloc] init];
     
-    [store save];
+    pirateDictionary[@"pirateName"] = self.pirateNameField.text;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"morgansPirates" object:nil userInfo:pirateDictionary];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

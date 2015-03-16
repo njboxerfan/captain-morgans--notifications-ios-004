@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Engine.h"
+#import "Pirate.h"
 
 @class Engine, Pirate;
 
